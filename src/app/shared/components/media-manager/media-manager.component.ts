@@ -149,7 +149,7 @@ export class MediaManagerComponent {
       let m: Media = {
         id: -1,
         title: files[i].name.split('.').slice(0, -1).join('.'),
-        url: 'inconnu',
+        url: 'inconnue',
         mediaTypeId: mediaType,
         userId: this.user.Id,
       };
