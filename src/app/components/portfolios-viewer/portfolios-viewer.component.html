@@ -1,0 +1,33 @@
+<p-panel>
+    <ng-template pTemplate="header">
+        <div class="w-full text-center">
+            <h2>Mes Portfolios</h2>
+        </div>
+    </ng-template>
+
+    <div class="grid justify-content-around">
+        @for (portfolio of portfolios; track $index) {
+        <p-panel class="col-12 lg:col-3 p-0 cursor-pointer my-2 mx-1"
+            (click)="navigateToPortfolio(portfolio.id)">
+
+            <ng-template pTemplate="header">
+                <div class="absolute top-0 right-0 -m-2">
+                    <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="danger" (click)="delete($event, portfolio.id)"></p-button>
+                </div>
+                
+                
+                <div>
+                    <h4 class="m-0">{{portfolio.title | titlecase}}</h4>
+                    <span>crée le : {{portfolio.creationDate | date:'dd-MM-YYYY'}}</span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="content">
+                <div>
+                    <p>{{portfolio.description}}</p>
+                </div>
+            </ng-template>
+        </p-panel>
+        }
+    </div>
+    <p-button label="Créer un nouveau Portfolio" (click)="navigateToPortfolioCreation()" styleClass="mt-4"></p-button>
+</p-panel>

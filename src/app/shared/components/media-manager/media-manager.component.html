@@ -1,0 +1,76 @@
+<div class="w-full h-full fixed top-0 left-0 flex justify-content-center align-items-center bg-black-alpha-70"
+    (click)="exit()">
+    <p-card header="Ajouter des médias" class="w-10 lg:w-8 text-center" styleClass="ml-0 pl-0"
+        (click)="stopPropagation($event)">
+        <p-tabMenu [model]="tabItems" [activeItem]="activeTabItem"></p-tabMenu>
+
+        <!-- TODO: créer component media viewer-->
+        <!-- Images Viewer -->
+        <!-- TODO: permettre la suppression de media -->
+        <div [class]="isAddingImage ? 'relative flex flex-column justify-content-between py-2 border-1 border-round border-primary h-20rem lg:h-30rem' : ''"
+            [hidden]="!isAddingImage">
+            <div class="grid pb-2 m-0 h-full justify-content-around overflow-auto ">
+                @if(pictures.length > 0){
+                @for (pic of pictures; track $index) {
+                <div class="col-6 lg:col-2 relative" (click)="selectMedia(pic, imgCheck)">
+                    <p-checkbox #imgCheck [name]="pic.title" [binary]="true" [value]="false" [inputId]="'checkPic'+$index"
+                        class="absolute right-0 pr-2 z-2"></p-checkbox>
+                    <p-image #thumbnail [src]="pic.url" [alt]="pic.title" class="cursor-pointer"
+                        imageClass="w-full"></p-image>
+                </div>
+                }
+                }@else {
+                <p>Vous n'avez aucune images</p>
+                }
+            </div>
+
+            <div>
+                <p-fileUpload #imgUpload mode="basic" [multiple]="true" chooseLabel="Ajouter Image" name="addPic"
+                    id="addPic" accept="image/*" (onSelect)="addMedia($event, 1, imgUpload)"></p-fileUpload>
+            </div>
+        </div>
+
+        <!-- Videos Viewer -->
+        <div [class]="isAddingVideo ? 'flex flex-column justify-content-between py-2 border-1 border-round border-primary h-20rem lg:h-30rem' : ''"
+            [hidden]="!isAddingVideo">
+            <div class="grid pb-2 m-0 h-full justify-content-around overflow-auto">
+                @if(videos.length > 0){
+                @for (vid of videos; track $index) {
+                <div class="col-6 lg:col-2 relative" (click)="selectMedia(vid, vidCheck)">
+                    <p-checkbox #vidCheck [name]="vid.title" [binary]="true" [value]="false" [inputId]="'checkVid'+$index"
+                        class="absolute right-0 pr-2 z-2"></p-checkbox>
+                    <p-image #thumbnail [src]="vid.url" [alt]="vid.title" class="cursor-pointer"
+                        imageClass="w-full"></p-image>
+                </div>
+                }
+                }@else {
+                <p>Vous n'avez aucune videos</p>
+                }
+            </div>
+
+            <div>
+                <p-fileUpload #vidUpload mode="basic" [multiple]="true" chooseLabel="Ajouter Vidéo" name="addVid"
+                    id="addVid" accept="video/*" (onSelect)="addMedia($event, 2, vidUpload)"></p-fileUpload>
+            </div>
+        </div>
+
+        <!-- Medias selected viewer -->
+        <ng-template pTemplate="footer">
+            <p>Médias sélectionnés ({{selectedMedias.length}}/{{maxMediaSelected}}):</p>
+            <div class="overflow-auto h-7rem lg:h-10rem pb-2 grid justify-content-around">
+                @if(selectedMedias.length > 0){
+                @for (media of selectedMedias; track $index) {
+                <div class="col-6 lg:col-2">
+                    <p-image [src]="media.url" [alt]="media.title" imageClass="w-full"></p-image>
+                </div>
+                }
+                }@else {
+                <p>Vous n'avez aucuns médias sélectionnés</p>
+                }
+            </div>
+            <br>
+            <p-button type="button" (click)="submit()">Ajouter les médias au projet</p-button>
+        </ng-template>
+
+    </p-card>
+</div>

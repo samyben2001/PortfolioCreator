@@ -1,0 +1,28 @@
+<p-menubar>
+    <!-- Left Side -->
+    <ng-template pTemplate="start">
+        <a routerLink=""><img src="https://primefaces.org/cdn/primeng/images/primeng.svg" height="40"
+                class="mr-2" /></a>
+    </ng-template>
+
+    <!-- Right Side -->
+    <ng-template pTemplate="end">
+
+        @if(!isConnected()){
+        <p-button label="Se Connecter" [raised]="true" (click)="login()"></p-button>
+        <p-button label="S'enregistrer" [raised]="true" (click)="register()"></p-button>
+        }@else{
+        <p-menu #menu [model]="items" [popup]="true"></p-menu>
+        <p-button styleClass="p-button-text border-none align-items-end" [outlined]="true" severity="secondary"
+            (click)="menu.toggle($event)">
+            <i class="pi pi pi-user pr-2">
+                <span class="font-semibold pl-1">
+                    {{user.Username}}
+                </span>
+            </i>
+            <i class="pi pi-chevron-down text-xs"></i>
+            
+        </p-button>
+        }
+    </ng-template>
+</p-menubar>

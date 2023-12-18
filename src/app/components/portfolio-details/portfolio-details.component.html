@@ -1,0 +1,43 @@
+<!-- TODO: permettre l'update du portfolio -->
+@if (portfolio) {
+<p-panel>
+    <ng-template pTemplate="header">
+        <div class="w-full text-center">
+            <h2>{{portfolio.title | titlecase}}</h2>
+            <p>{{portfolio.creationDate| date:'dd-MM-YYYY'}}</p>
+            <p>{{portfolio.description}}</p>
+        </div>
+    </ng-template>
+
+    @if (portfolio.projects.length > 0) {
+    <div class="grid justify-content-around">
+
+        @for (project of portfolio.projects; track $index) {
+        <p-panel class="col-12 lg:col-3 cursor-pointer p-0 mx-1 my-2" (click)="navigateToProjectDetails(project.id)">
+            <ng-template pTemplate="header">
+                <div class="absolute top-0 right-0 -m-2">
+                    <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="danger" (click)="delete($event, project.id)"></p-button>
+                </div>
+
+                <div>
+                    <h4 class="m-0">{{project.title | titlecase}}</h4>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="content">
+                <div>
+                    <p>{{project.description}}</p>
+                    <p>{{project.creationDate | date:'dd-MM-YYYY'}}</p>
+                </div>
+            </ng-template>
+        </p-panel>
+        }
+    </div>
+    <p-button label="Ajouter un nouveau projet" (click)="navigateToProjectCreation(portfolio.id)" styleClass="mt-4"></p-button>
+
+    }@else {
+    <p>Aucun projets dans ce portfolio actuellement</p>
+    <p-button label="Ajouter un nouveau projet" (click)="navigateToProjectCreation(portfolio.id)"></p-button>
+    }
+</p-panel>
+}

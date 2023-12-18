@@ -1,0 +1,36 @@
+<!-- TODO: permettre l'update du projet -->
+@if (project) {
+<p-panel>
+    <ng-template pTemplate="header">
+        <div class="w-full text-center">
+            <h2>{{project.title | titlecase}}</h2>
+            <p>{{project.creationDate| date:'dd-MM-YYYY'}}</p>
+            <p>{{project.description}}</p>
+        </div>
+    </ng-template>
+
+    <div class="grid justify-content-center my-2">
+        @for (skill of project.skill; track $index) {
+        <div class="col-2 text-center">
+            <p-chip [label]="skill.name"></p-chip>
+        </div>
+        }
+    </div>
+
+    <div class="grid justify-content-center my-2">
+        @for (img of images; track $index) {
+        <div class="col-6 lg:col-2 relative">
+            <p-image [src]="img.url" [alt]="img.title" imageClass="w-full"></p-image>
+        </div>
+        }
+    </div>
+
+    <div class="grid justify-content-center my-2">
+        @for (vid of videos; track $index) {
+        <div class="col-6 lg:col-2 relative">
+            <p-image [src]="vid.url" [alt]="vid.title" imageClass="w-full"></p-image>
+        </div>
+        }
+    </div>
+</p-panel>
+}

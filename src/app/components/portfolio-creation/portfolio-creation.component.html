@@ -1,0 +1,24 @@
+<p-card class="w-full lg:w-8 text-center">
+    <form [formGroup]="group" class="w-full" (ngSubmit)="submit()">
+        <div class="pb-4 w-full">
+            <span class="p-float-label">
+                <input formControlName="title" pInputText id="Title" type="text" class="validate w-full">
+                <label for="Title">Titre</label>
+            </span>
+        </div>
+
+        <div class="pb-4 w-full">
+            <span class="p-float-label">
+                <textarea formControlName="description" pInputText id="Description" type="text"
+                    class="validate w-full"></textarea>
+                <label for="Description">Description</label>
+            </span>
+        </div>
+
+<!-- TODO: Ajout media manager avec une limite de medias selectionnables (1 dans ce cas) -->
+
+        <div class="text-center">
+            <p-button type="submit" [disabled]="!group.valid">Valider et passer à l'ajout de projets</p-button>
+        </div>
+    </form>
+</p-card>

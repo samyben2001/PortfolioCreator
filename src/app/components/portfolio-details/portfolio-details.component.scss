@@ -1,0 +1,13 @@
+// NgPrime CSS Override
+:host {
+    ::ng-deep {
+
+        .p-panel .p-panel-header {
+            position: relative !important;
+        }
+    }
+}
+
+p-panel p-panel:hover h4 {
+    text-decoration: underline;
+}

@@ -1,0 +1,71 @@
+<p-card header="Ajouter un Projet" class="w-full lg:w-8 text-center">
+    <div>
+        @for (group of groups; track $index) {
+        <form [formGroup]="group" class="w-full px-1 lg:px-8 mt-4 border-1 border-round border-primary border-dashed">
+            <h4>Projet n° {{$index + 1}}</h4>
+            <div class="pb-4 w-full">
+                <span class="p-float-label">
+                    <input formControlName="title" pInputText [id]="'Title'+$index" type="text" class="validate w-full">
+                    <label [for]="'Title'+$index">Titre</label>
+                </span>
+            </div>
+
+            <div class="pb-4 w-full">
+                <span class="p-float-label">
+                    <textarea pInputTextarea formControlName="description"
+                        [id]="'Description'+$index" class="validate w-full" rows="5" [autoResize]="true"></textarea>
+                    <label [for]="'Description'+$index">Description</label>
+                </span>
+            </div>
+
+            <div class="pb-4 w-full">
+                <span class="p-float-label">
+                    <p-calendar formControlName="endingDate" dateFormat="dd-mm-yy" [inputId]="'EndingDate'+$index"
+                        styleClass="w-full"></p-calendar>
+                    <label [for]="'EndingDate'+$index">Date de réalisation</label>
+                </span>
+            </div>
+
+            <div class="pb-4">
+                <span class="p-fluid p-float-label">
+                    <p-autoComplete formControlName="selectedSkills" [suggestions]="filteredSkills"
+                        (completeMethod)="filterSkill($event)" [completeOnFocus]="true" [multiple]="true" field="name"
+                        inputId="skill-input" class="text-left"></p-autoComplete>
+                    @if (group.value.selectedSkills.length <= 0 ) {<label for="skill-input">Compétences</label>}
+
+                </span>
+            </div>
+
+            <div class="pb-4 text-left">
+                @if (selectedMediasByProj.get($index) != undefined && selectedMediasByProj.get($index)!.length > 0){
+                <div class="overflow-auto h-8rem lg:h-10rem pb-2 grid justify-content-around">
+                    @for (media of selectedMediasByProj.get($index); track media.id; let i = $index) {
+                    <div class="col-6 lg:col-2">
+                        <p-image [src]="media.url" [alt]="media.title" imageClass="h-4rem w-auto"></p-image>
+                    </div>
+                    }
+                </div>
+                }@else {
+                <p>Aucun médias sélectionnés</p>
+                }
+
+                <p-button type="button" (click)="addMedia($index)" [disabled]="isAddingMedia">Ajouter médias</p-button>
+
+            </div>
+
+        </form>
+        }
+    </div>
+
+    <ng-template pTemplate="footer">
+        <div>
+            <p-button type="button" (click)="addNewProject()">Ajouter un nouveau projet</p-button>
+        </div>
+
+        <div class="mt-4">
+            <p-button type="button" (click)="submitAll()">Valider les projets</p-button>
+        </div>
+    </ng-template>
+</p-card>
+
+<app-media-manager [hidden]="!isAddingMedia" [maxMediaSelected]="10" (selectedMediasEvent)="getMedias($event)" />
