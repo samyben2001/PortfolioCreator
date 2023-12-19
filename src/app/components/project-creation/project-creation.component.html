@@ -12,8 +12,8 @@
 
             <div class="pb-4 w-full">
                 <span class="p-float-label">
-                    <textarea pInputTextarea formControlName="description"
-                        [id]="'Description'+$index" class="validate w-full" rows="5" [autoResize]="true"></textarea>
+                    <textarea pInputTextarea formControlName="description" [id]="'Description'+$index"
+                        class="validate w-full" rows="5" [autoResize]="true"></textarea>
                     <label [for]="'Description'+$index">Description</label>
                 </span>
             </div>
@@ -38,10 +38,10 @@
 
             <div class="pb-4 text-left">
                 @if (selectedMediasByProj.get($index) != undefined && selectedMediasByProj.get($index)!.length > 0){
-                <div class="overflow-auto h-8rem lg:h-10rem pb-2 grid justify-content-around">
+                <div class="overflow-auto h-8rem lg:h-10rem pb-2 m-0 grid justify-content-around">
                     @for (media of selectedMediasByProj.get($index); track media.id; let i = $index) {
                     <div class="col-6 lg:col-2">
-                        <p-image [src]="media.url" [alt]="media.title" imageClass="h-4rem w-auto"></p-image>
+                        <p-image [src]="media.url" [alt]="media.title" imageClass="w-full"></p-image>
                     </div>
                     }
                 </div>
@@ -68,4 +68,5 @@
     </ng-template>
 </p-card>
 
-<app-media-manager [hidden]="!isAddingMedia" [maxMediaSelected]="10" (selectedMediasEvent)="getMedias($event)" />
+<app-media-manager [hidden]="!isAddingMedia" [maxMediaSelected]="10" [actualMediaSelected]="
+this.selectedMediasByProj.get(index)?.length!" (selectedMediasEvent)="getMedias($event)" />

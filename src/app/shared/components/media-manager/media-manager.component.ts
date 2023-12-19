@@ -25,6 +25,7 @@ import { MenuItem } from 'primeng/api';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { AuthService } from '../../../services/auth.service';
 import { first } from 'rxjs';
+import { MediaManagerContentComponent } from '../media-manager-content/media-manager-content.component';
 
 @Component({
   selector: 'app-media-manager',
@@ -38,7 +39,8 @@ import { first } from 'rxjs';
     TabMenuModule,
     ImageModule,
     CheckboxModule,
-    ContextMenuModule,
+
+    MediaManagerContentComponent,
   ],
   templateUrl: './media-manager.component.html',
   styleUrl: './media-manager.component.scss',
@@ -61,12 +63,15 @@ export class MediaManagerComponent {
   isAddingVideo: boolean = false;
 
   @Input() maxMediaSelected: number = 0;
+  @Input() actualMediaSelected: number = 0;
 
   @Output() selectedMediasEvent: EventEmitter<Media[]> = new EventEmitter<
     Media[]
   >();
 
   @ViewChildren(Checkbox) checks!: QueryList<Checkbox>;
+  @ViewChildren(MediaManagerContentComponent)
+  mediasManagercontents!: QueryList<MediaManagerContentComponent>;
 
   constructor() {
     this.user = this.authServ.getUser();
@@ -93,13 +98,7 @@ export class MediaManagerComponent {
     ];
   }
 
-  ngAfterViewInit() {
-    console.log(this.checks);
-  }
-
   ngOnInit() {
-    console.log(this.maxMediaSelected);
-
     //Get pictures of User
     this.mediaServ.getAllByUserAndMediaType(this.user.Id, 1).subscribe({
       next: (m) => {
@@ -125,85 +124,6 @@ export class MediaManagerComponent {
     this.isAddingImage = false;
   }
 
-  selectMedia(media: Media, check: Checkbox) {
-    const i = this.selectedMedias.indexOf(media);
-
-    if (i == -1) {
-      if (this.selectedMedias.length < this.maxMediaSelected) {
-        check.writeValue(true);
-        check.value = true;
-        this.selectedMedias.push(media);
-      }
-    } else {
-      check.writeValue(false);
-      check.value = false;
-      this.selectedMedias.splice(i, 1);
-    }
-  }
-
-  addMedia(event: any, mediaType: number, upload: any) {
-    const files: FileList = event.currentFiles! as FileList;
-
-    for (let i = 0; i < files.length; i++) {
-      //creation de l'objet média aver URL vide
-      let m: Media = {
-        id: -1,
-        title: files[i].name.split('.').slice(0, -1).join('.'),
-        url: 'inconnue',
-        mediaTypeId: mediaType,
-        userId: this.user.Id,
-      };
-
-      if (mediaType == 1) {
-        //Si le media est une image => envoi à cloudinary puis à la DB
-        this.cloudinaryServ.upload(files[i]).subscribe({
-          next: (x: any) => {
-            m.url = x.url;
-            this.sendToDB(m);
-          },
-          error: (e: any) => {
-            console.log(e);
-          },
-        });
-      } else {
-        //envoi direct des medias à la DB
-        this.sendToDB(m);
-      }
-
-      upload.clear();
-    }
-  }
-
-  sendToDB(media: Media) {
-    this.mediaServ.create(media).subscribe({
-      next: (m) => {
-        switch (m.mediaTypeId) {
-          case 1: //image
-            this.pictures.push(m);
-            break;
-          case 2: //video
-            this.videos.push(m);
-            break;
-          case 3: //exteral link
-          default:
-            break;
-        }
-
-        if (this.selectedMedias.length < this.maxMediaSelected) {
-          this.selectedMedias.push(m);
-          this.cdRef.detectChanges();
-          this.checks.map((c) => {
-            if (c.name == media.title) {
-              c.writeValue(true);
-              c.value = true;
-            }
-          });
-        }
-        
-      },
-    });
-  }
-
   stopPropagation($event: any) {
     $event.stopPropagation();
   }
@@ -214,7 +134,9 @@ export class MediaManagerComponent {
     this.isAddingVideo = false;
     this.isAddingImage = true;
 
-    this.initializeSelectedMediasToEmpty();
+    this.mediasManagercontents.forEach((component) => {
+      component.initializeSelectedMediasToEmpty();
+    });
   }
 
   submit() {
@@ -223,14 +145,25 @@ export class MediaManagerComponent {
     this.isAddingVideo = false;
     this.isAddingImage = true;
 
-    this.initializeSelectedMediasToEmpty();
+    this.mediasManagercontents.forEach((component) => {
+      component.initializeSelectedMediasToEmpty();
+    });
   }
 
-  private initializeSelectedMediasToEmpty() {
-    this.checks.forEach((check) => {
-      check.writeValue(false);
-      check.value = false;
+  //Events Methods
+  addMedia($event: Media[]) {
+    $event.forEach((media) => {
+      if (!this.selectedMedias.includes(media)) {
+        this.selectedMedias.push(media);
+      }
     });
+  }
+
+  removeMedia($event: Media) {
+    this.selectedMedias.splice(this.selectedMedias.indexOf($event), 1);
+  }
+
+  resetMedias() {
     this.selectedMedias = [];
   }
 }

@@ -1,0 +1,33 @@
+<div class="grid pb-2 m-0 h-full justify-content-around overflow-auto ">
+    @if(medias.length > 0){
+    @for (media of medias; track $index) {
+    <div class="col-6 lg:col-2 relative" (click)="selectMedia(media, mediaCheck)">
+        <p-checkbox #mediaCheck [name]="media.title" [binary]="true" [value]="false" [inputId]="'checkPic'+$index"
+            class="absolute right-0 pr-2 z-2"></p-checkbox>
+        <p-image #thumbnail [src]="media.url" [alt]="media.title" class="cursor-pointer" imageClass="w-full"></p-image>
+    </div>
+    }
+    }@else {
+    @switch (mediasType) {
+    @case (1) {
+    <p>Vous n'avez aucune images</p>
+    }
+    @case(2){
+    <p>Vous n'avez aucune vidéos</p>
+    }
+    }
+    }
+</div>
+
+<div>
+    @switch (mediasType) {
+    @case (1) {
+    <p-fileUpload #imgUpload mode="basic" [multiple]="true" chooseLabel="Ajouter Image" name="addPic" id="addPic"
+        accept="image/*" (onSelect)="addMedia($event, imgUpload)"></p-fileUpload>
+    }
+    @case (2) {
+    <p-fileUpload #vidUpload mode="basic" [multiple]="true" chooseLabel="Ajouter Vidéo" name="addVid" id="addVid"
+        accept="video/*" (onSelect)="addMedia($event, vidUpload)"></p-fileUpload>
+    }
+    }
+</div>
