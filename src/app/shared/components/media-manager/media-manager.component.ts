@@ -55,15 +55,15 @@ export class MediaManagerComponent {
   pictures: Media[] = [];
   videos: Media[] = [];
   selectedMedias: Media[] = [];
-  tabItems: MenuItem[] | undefined;
-  contextItems: MenuItem[] | undefined;
-  activeTabItem: MenuItem | undefined;
+  tabItems: MenuItem[] = [];
 
   isAddingImage: boolean = true;
   isAddingVideo: boolean = false;
 
   @Input() maxMediaSelected: number = 0;
   @Input() actualMediaSelected: number = 0;
+  @Input() videoIsAvailable: boolean = true;
+  @Input() pictureIsAvailable: boolean = true;
 
   @Output() selectedMediasEvent: EventEmitter<Media[]> = new EventEmitter<
     Media[]
@@ -75,31 +75,26 @@ export class MediaManagerComponent {
 
   constructor() {
     this.user = this.authServ.getUser();
+  }
 
+  ngOnInit() {
     this.tabItems = [
       {
         label: 'Images',
         icon: 'pi pi-fw pi-images',
         command: (e) => this.viewPictures(),
+        disabled: this.pictureIsAvailable == true ? false : true,
       },
       {
         label: 'Vidéos',
         icon: 'pi pi-fw pi-video',
         command: () => this.viewVideos(),
+        disabled: this.videoIsAvailable == true ? false : true,
       },
     ];
-    this.activeTabItem = this.tabItems[0];
 
-    this.contextItems = [
-      {
-        label: 'Delete',
-        icon: 'pi pi-fw pi-trash',
-      },
-    ];
-  }
-
-  ngOnInit() {
     //Get pictures of User
+    console.log(this.videoIsAvailable)
     this.mediaServ.getAllByUserAndMediaType(this.user.Id, 1).subscribe({
       next: (m) => {
         this.pictures = m;

@@ -2,7 +2,7 @@
     (click)="exit()">
     <p-card header="Ajouter des médias" class="w-10 lg:w-8 text-center" styleClass="ml-0 pl-0"
         (click)="stopPropagation($event)">
-        <p-tabMenu [model]="tabItems" [activeItem]="activeTabItem"></p-tabMenu>
+        <p-tabMenu [model]="tabItems" [activeItem]="tabItems[0]"></p-tabMenu>
 
         <!-- Images Viewer -->
         <!-- TODO: permettre la suppression de media -->
@@ -34,7 +34,7 @@
                 }
             </div>
             <br>
-            <p-button type="button" (click)="submit()">Ajouter les médias au projet</p-button>
+            <p-button type="button" (click)="submit()">Valider les médias</p-button>
         </ng-template>
 
     </p-card>

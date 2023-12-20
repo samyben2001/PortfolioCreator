@@ -102,12 +102,10 @@ export class ProjectCreationComponent {
   }
 
   getMedias(medias: Media[]) {
-    console.log(this.index);
     this.selectedMediasByProj.set(
       this.index,
       this.selectedMediasByProj.get(this.index)?.concat(medias)!
     );
-    console.log(this.selectedMediasByProj.get(this.index));
 
     medias.forEach((media) => {
       if (!this.projects[this.index].mediaIds.includes(media.id)) {

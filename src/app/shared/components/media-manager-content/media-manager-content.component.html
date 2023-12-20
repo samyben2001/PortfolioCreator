@@ -1,7 +1,7 @@
 <div class="grid pb-2 m-0 h-full justify-content-around overflow-auto ">
     @if(medias.length > 0){
     @for (media of medias; track $index) {
-    <div class="col-6 lg:col-2 relative" (click)="selectMedia(media, mediaCheck)">
+    <div class="col-6 lg:col-2 relative" style="height: fit-content;" (click)="selectMedia(media, mediaCheck)">
         <p-checkbox #mediaCheck [name]="media.title" [binary]="true" [value]="false" [inputId]="'checkPic'+$index"
             class="absolute right-0 pr-2 z-2"></p-checkbox>
         <p-image #thumbnail [src]="media.url" [alt]="media.title" class="cursor-pointer" imageClass="w-full"></p-image>

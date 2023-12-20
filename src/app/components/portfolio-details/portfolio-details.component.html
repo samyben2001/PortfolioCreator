@@ -16,7 +16,7 @@
         <p-panel class="col-12 lg:col-3 cursor-pointer p-0 mx-1 my-2" (click)="navigateToProjectDetails(project.id)">
             <ng-template pTemplate="header">
                 <div class="absolute top-0 right-0 -m-2">
-                    <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="danger" (click)="delete($event, project.id)"></p-button>
+                    <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="danger" size="small" (click)="delete($event, project.id)"></p-button>
                 </div>
 
                 <div>

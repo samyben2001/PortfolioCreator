@@ -15,10 +15,24 @@
             </span>
         </div>
 
-<!-- TODO: Ajout media manager avec une limite de medias selectionnables (1 dans ce cas) -->
+        <div class="pb-4 w-full">
 
-        <div class="text-center">
+            @if (media) {
+                <div class="pb-4 h-8rem lg:h-10rem">
+                    <p-image [src]="media.url" [alt]="media.title" imageClass="h-full"></p-image>
+                </div>
+                }@else {
+                <p>Aucun médias sélectionnés</p>
+            }
+
+            <p-button type="button" (click)="addMedia()" [disabled]="isAddingMedia">{{media == undefined? "Ajouter image" : "Modifier Image"}}</p-button>
+        </div>
+
+        <div>
             <p-button type="submit" [disabled]="!group.valid">Valider et passer à l'ajout de projets</p-button>
         </div>
     </form>
 </p-card>
+
+<app-media-manager [hidden]="!isAddingMedia" [maxMediaSelected]="1" [actualMediaSelected]="
+0" [videoIsAvailable]="false" (selectedMediasEvent)="getMedias($event)" />

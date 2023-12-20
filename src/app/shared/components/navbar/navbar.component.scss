@@ -1,6 +1,5 @@
 :host {
   ::ng-deep {
-
     ul[role="menu"] > li[role="none"]:first-child {
       display: none;
     }

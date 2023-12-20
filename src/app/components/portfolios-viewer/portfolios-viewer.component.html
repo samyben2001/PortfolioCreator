@@ -12,9 +12,8 @@
 
             <ng-template pTemplate="header">
                 <div class="absolute top-0 right-0 -m-2">
-                    <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="danger" (click)="delete($event, portfolio.id)"></p-button>
+                    <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="danger" size="small" (click)="delete($event, portfolio.id)"></p-button>
                 </div>
-                
                 
                 <div>
                     <h4 class="m-0">{{portfolio.title | titlecase}}</h4>
@@ -22,6 +21,9 @@
                 </div>
             </ng-template>
             <ng-template pTemplate="content">
+                @if (portfolio.media) {
+                    <p-image [src]="portfolio.media.url" [alt]="portfolio.media.title" imageClass="w-full"></p-image>
+                }
                 <div>
                     <p>{{portfolio.description}}</p>
                 </div>
