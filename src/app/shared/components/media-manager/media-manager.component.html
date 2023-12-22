@@ -1,4 +1,4 @@
-<div class="w-full h-full fixed top-0 left-0 flex justify-content-center align-items-center bg-black-alpha-70"
+<div class="w-full h-full fixed top-0 left-0 flex justify-content-center align-items-center bg-black-alpha-70 overflow-auto"
     (click)="exit()">
     <p-card header="Ajouter des médias" class="w-10 lg:w-8 text-center" styleClass="ml-0 pl-0"
         (click)="stopPropagation($event)">
@@ -7,14 +7,12 @@
         <!-- Images Viewer -->
         <!-- TODO: permettre la suppression de media -->
         <app-media-manager-content
-            [class]="isAddingImage ? 'relative flex flex-column justify-content-between py-2 border-1 border-round border-primary h-20rem lg:h-30rem' : ''"
             [hidden]="!isAddingImage" [medias]="pictures" [mediasType]="1" [maxMediaSelected]="maxMediaSelected"
             [actualMediaSelected]="actualMediaSelected" (addMediasEvent)="addMedia($event)"
             (removeMediasEvent)="removeMedia($event)" (resetMediasEvent)="resetMedias()"></app-media-manager-content>
 
         <!-- Videos Viewer -->
         <app-media-manager-content
-            [class]="isAddingVideo ? 'relative flex flex-column justify-content-between py-2 border-1 border-round border-primary h-20rem lg:h-30rem' : ''"
             [hidden]="!isAddingVideo" [medias]="videos" [mediasType]="2" [maxMediaSelected]="maxMediaSelected"
             [actualMediaSelected]="actualMediaSelected" (addMediasEvent)="addMedia($event)"
             (removeMediasEvent)="removeMedia($event)" (resetMediasEvent)="resetMedias()"></app-media-manager-content>

@@ -1,7 +1,7 @@
 <p-card header="Ajouter un Projet" class="w-full lg:w-8 text-center">
     <div>
         @for (group of groups; track $index) {
-        <form [formGroup]="group" class="w-full px-1 lg:px-8 mt-4 border-1 border-round border-primary border-dashed">
+        <form [formGroup]="group" class="w-full px-1 lg:px-8 mt-2 border-1 border-round border-primary border-dashed">
             <h4>Projet n° {{$index + 1}}</h4>
             <div class="pb-4 w-full">
                 <span class="p-float-label">

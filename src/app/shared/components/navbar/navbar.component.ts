@@ -1,4 +1,10 @@
-import { Component, WritableSignal, computed, inject } from '@angular/core';
+import {
+  Component,
+  WritableSignal,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 
@@ -27,60 +33,61 @@ import { AuthService } from '../../../services/auth.service';
 export class NavbarComponent {
   authService = inject(AuthService);
   router = inject(Router);
-  isConnected: WritableSignal<boolean>;
+  isConnected: WritableSignal<boolean> = signal(false);
   user: any;
 
   items: MenuItem[] = [];
   endItems: MenuItem[] = [];
 
-  constructor() {
-    this.isConnected = this.authService.isConnected;
-  }
+  constructor() {}
 
   ngOnInit() {
     this.authService.checkConnection();
+    this.isConnected = this.authService.isConnected;
 
     this.user = this.authService.getUser();
-
-    this.items = [
-      {
-        label: undefined,
-        items: [
-          {
-            label: 'Mon Profil',
-            command: () => {
-              this.goToProfile();
+    
+    if (this.user) {
+      this.items = [
+        {
+          label: undefined,
+          items: [
+            {
+              label: 'Mon Profil',
+              command: () => {
+                this.goToProfile();
+              },
             },
-          },
-        ],
-      },
-      {
-        label: 'Portfolios',
-        items: [
-          {
-            label: 'Créer Portfolio',
-            routerLink: '/portfolioCreation',
-          },
-          {
-            label: 'Mes portfolios',
-            routerLink: ['portfolios/', this.user.Id],
-          },
-        ],
-      },
-      {
-        items: [
-          {
-            label: 'Se déconnecter',
-            icon: 'pi pi-sign-out',
-            command: () => {
-              this.logout();
+          ],
+        },
+        {
+          label: 'Portfolios',
+          items: [
+            {
+              label: 'Créer Portfolio',
+              routerLink: '/portfolioCreation',
             },
-          },
-        ],
-      },
-    ];
+            {
+              label: 'Mes portfolios',
+              routerLink: ['portfolios/', this.user.Id],
+            },
+          ],
+        },
+        {
+          items: [
+            {
+              label: 'Se déconnecter',
+              icon: 'pi pi-sign-out',
+              command: () => {
+                this.logout();
+              },
+            },
+          ],
+        },
+      ];
+    }
   }
-  
+
   goToProfile() {
     //TODO: Creer la page de profil de l'utilisateur + modification mdp
     throw new Error('Method not implemented.');
@@ -94,7 +101,6 @@ export class NavbarComponent {
   }
 
   logout() {
-    console.log(this.isConnected());
     this.authService.removeToken();
   }
 }

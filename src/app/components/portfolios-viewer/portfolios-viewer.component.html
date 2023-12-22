@@ -7,7 +7,7 @@
 
     <div class="grid justify-content-around">
         @for (portfolio of portfolios; track $index) {
-        <p-panel class="col-12 lg:col-3 p-0 cursor-pointer my-2 mx-1"
+        <p-panel class="col-12 lg:col-5 p-0 cursor-pointer my-2 mx-1"
             (click)="navigateToPortfolio(portfolio.id)">
 
             <ng-template pTemplate="header">
@@ -17,19 +17,28 @@
                 
                 <div>
                     <h4 class="m-0">{{portfolio.title | titlecase}}</h4>
-                    <span>crée le : {{portfolio.creationDate | date:'dd-MM-YYYY'}}</span>
+                    <span class="text-xs text-500">crée le : {{portfolio.creationDate | date:'dd-MM-YYYY'}}</span>
                 </div>
             </ng-template>
             <ng-template pTemplate="content">
+                <div class="text-center">
+                    
                 @if (portfolio.media) {
-                    <p-image [src]="portfolio.media.url" [alt]="portfolio.media.title" imageClass="w-full"></p-image>
+                    <div class="h-4rem">
+                        <p-image [src]="portfolio.media.url" [alt]="portfolio.media.title" imageClass="h-full"></p-image>
+                    </div>
                 }
+                
                 <div>
                     <p>{{portfolio.description}}</p>
                 </div>
+            </div>
             </ng-template>
         </p-panel>
         }
     </div>
-    <p-button label="Créer un nouveau Portfolio" (click)="navigateToPortfolioCreation()" styleClass="mt-4"></p-button>
+    
+    <ng-template pTemplate="footer">
+        <p-button label="Créer un nouveau Portfolio" (click)="navigateToPortfolioCreation()" styleClass="mt-4"></p-button>
+    </ng-template>
 </p-panel>

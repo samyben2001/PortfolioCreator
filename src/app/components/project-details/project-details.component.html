@@ -5,30 +5,34 @@
         <div class="w-full text-center">
             <h2>{{project.title | titlecase}}</h2>
             <p>{{project.creationDate| date:'dd-MM-YYYY'}}</p>
-            <p>{{project.description}}</p>
         </div>
     </ng-template>
 
-    <div class="grid justify-content-center my-2">
-        @for (skill of project.skill; track $index) {
-        <div class="col-2 text-center">
-            <p-chip [label]="skill.name"></p-chip>
-        </div>
-        }
+    <div class="mt-2 mb-4 border-bottom-1 border-200 text-center">
+        <p>{{project.description}}</p>
     </div>
 
-    <div class="grid justify-content-center my-2">
-        @for (img of images; track $index) {
-        <div class="col-6 lg:col-2 relative">
-            <p-image [src]="img.url" [alt]="img.title" imageClass="w-full"></p-image>
-        </div>
-        }
-    </div>
+    <!-- Images -->
+    <p-carousel [value]="images" [numVisible]="1" [numScroll]="1" [circular]="true">
+        <ng-template let-image pTemplate="item">
+            <p-image [src]="image.url" [alt]="image.title" imageClass="w-full"></p-image>
+        </ng-template>
+    </p-carousel>
 
+    <!-- Videos -->
     <div class="grid justify-content-center my-2">
         @for (vid of videos; track $index) {
         <div class="col-6 lg:col-2 relative">
             <p-image [src]="vid.url" [alt]="vid.title" imageClass="w-full"></p-image>
+        </div>
+        }
+    </div>
+
+    <!-- Skills -->
+    <div class="grid justify-content-center my-2">
+        @for (skill of project.skill; track $index) {
+        <div class="col-2 text-center">
+            <p-chip [label]="skill.name"></p-chip>
         </div>
         }
     </div>

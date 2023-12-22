@@ -37,7 +37,12 @@ export class PortfolioViewerComponent {
     if (userId) {
       this.portfolioServ.getAllByUser(userId).subscribe({
         next: (p) => {
-          this.portfolios = p;
+          this.portfolios = p.sort((a: Portfolio, b: Portfolio) => {//Sort portfolios by Creation Date (newer first)
+            return (
+              new Date(b.creationDate).getTime() -
+              new Date(a.creationDate).getTime()
+            );
+          });
         },
       });
     }
