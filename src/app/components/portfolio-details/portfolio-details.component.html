@@ -2,10 +2,20 @@
 @if (portfolio) {
 <p-panel>
     <ng-template pTemplate="header">
-        <div class="w-full text-center">
-            <h2>{{portfolio.title | titlecase}}</h2>
+        <div class="w-full text-center relative">
+            <p-button [label]="isUpdateActive ? 'Arreter la modification' : 'Activer la modification'"
+                class="absolute top-0 right-0" size="small" (click)="toggleUpdate()"></p-button>
+            <h2 class="flex justify-content-center">
+                <span class="pr-2">{{portfolio.title | titlecase}}</span>
+                <i [class]="isUpdateActive ? 'pi pi-pencil cursor-pointer text-sm align-self-center text-500' : 'hidden'"
+                    (click)="update(portfolioUpdateType.Title)"></i>
+            </h2>
+
             <p class="text-sm text-500">{{portfolio.creationDate| date:'dd-MM-YYYY'}}</p>
-            <p class="border-top-1 border-400 pt-2">{{portfolio.description}}</p>
+            <p class="border-top-1 border-400 pt-2">{{portfolio.description}} <i
+                    [class]="isUpdateActive ? 'pi pi-pencil cursor-pointer text-sm align-self-center text-500' : 'hidden'"
+                    (click)="update(portfolioUpdateType.Description)"></i>
+            </p>
         </div>
     </ng-template>
 
@@ -15,7 +25,7 @@
         @for (project of portfolio.projects; track $index) {
         <p-panel class="col-12 lg:col-5 cursor-pointer p-0 mx-1 my-2" (click)="navigateToProjectDetails(project.id)">
             <ng-template pTemplate="header">
-                <div class="absolute top-0 right-0 -m-2">
+                <div [class]="isUpdateActive ? 'absolute top-0 right-0 -m-2' : 'hidden'">
                     <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="danger" size="small"
                         (click)="delete($event, project.id)"></p-button>
                 </div>
@@ -43,4 +53,6 @@
         <p-button label="Ajouter un nouveau projet" (click)="navigateToProjectCreation(portfolio.id)"></p-button>
     </ng-template>
 </p-panel>
+
+<app-portfolio-update-pop-up [hidden]="!isUpdating" [portfolioToUpdate]="portfolio" [updateType]="updateType" (updateEvent)="getUpdatedPortfolio($event)"></app-portfolio-update-pop-up>
 }

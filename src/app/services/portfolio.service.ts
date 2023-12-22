@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { environment } from '../../environment';
-import { Portfolio, PortfolioCreation } from '../models/portfolio.model';
+import { Portfolio, PortfolioCreation, PortfolioUpdate } from '../models/portfolio.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -26,6 +26,10 @@ export class PortfolioService {
 
   getAllByUser(userId: string): Observable<Portfolio[]> {
     return this.client.get<Portfolio[]>(this.url + "Portfolio/getAllByUser/" + userId)
+  }
+
+  update(portfolio: PortfolioUpdate): Observable<Portfolio> {
+    return this.client.patch<Portfolio>(this.url + "Portfolio/", portfolio)
   }
 
   delete(id: number): Observable<boolean> {

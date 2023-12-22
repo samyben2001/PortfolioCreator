@@ -9,8 +9,11 @@ export interface PortfolioCreation {
     mediaId?: number;
 }
 
-export interface Portfolio extends PortfolioCreation {
+export interface PortfolioUpdate extends PortfolioCreation{
     id: number
+}
+
+export interface Portfolio extends PortfolioUpdate {
     creationDate: Date
     lastUpdateDate?: Date
     media?: Media;

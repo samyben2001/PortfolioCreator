@@ -24,10 +24,12 @@ import { ImageModule } from 'primeng/image';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+
+    MediaManagerComponent,
+    
     InputTextModule,
     ButtonModule,
     CardModule,
-    MediaManagerComponent,
     ImageModule,
   ],
   templateUrl: './portfolio-creation.component.html',
