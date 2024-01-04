@@ -1,0 +1,37 @@
+<div
+    class="w-full h-full fixed top-0 left-0 flex justify-content-center align-items-center bg-black-alpha-70 overflow-auto" (click)="exit()">
+    <p-card class="w-10 lg:w-8 text-center mb-8" styleClass="ml-0 pl-0" (click)="stopPropagation($event)">
+        <form [formGroup]="group" class="w-full" (ngSubmit)="submit()">
+
+            @switch (updateType) {
+            @case (allUpdateTypes.Title) { <!-- Update du Titre -->
+            <span class="p-float-label">
+                <input formControlName="title" pInputText id="Title" type="text" class="validate w-full">
+                <label for="Title">Titre</label>
+            </span>
+            }
+            @case (allUpdateTypes.Description) { <!-- Update de la description -->
+            <span class="p-float-label">
+                <textarea formControlName="description" pInputText id="Description" type="text" rows="5"
+                    class="validate w-full"></textarea>
+                <label for="Description">Description</label>
+            </span>
+            }
+            @case (allUpdateTypes.EndingDate) { <!-- Update de la description -->
+                <span class="p-float-label">
+                    <p-calendar formControlName="endingDate" dateFormat="dd-mm-yy" inputId="EndingDate"
+                        styleClass="w-full"></p-calendar>
+                    <label for="EndingDate">Date de réalisation</label>
+                </span>
+                }
+            @default {
+            <p>Champ inconnu!</p>
+            }
+            }
+            <div class="mt-4">
+                <p-button type="submit" label="Valider" class="mr-2" [disabled]="!group.valid"></p-button>
+                <p-button type="button" label="Annuler" severity="danger" (click)="exit()"></p-button>
+            </div>
+        </form>
+    </p-card>
+</div>

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UpdatePopUpComponent } from './portfolio-update-pop-up.component';
+import { UpdatePopUpComponent } from './update-pop-up.component';
 
 describe('UpdatePopUpComponent', () => {
   let component: UpdatePopUpComponent;

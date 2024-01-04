@@ -29,7 +29,7 @@
             <div class="pb-4">
                 <span class="p-fluid p-float-label">
                     <p-autoComplete formControlName="selectedSkills" [suggestions]="filteredSkills"
-                        (completeMethod)="filterSkill($event)" [completeOnFocus]="true" [multiple]="true" field="name"
+                        (completeMethod)="filterSkill($event)" (onSelect)="removeSkill($event)" (onUnselect)="addSkill($event)" (onFocus)="focus($event)" [completeOnFocus]="true" [multiple]="true" field="name"
                         inputId="skill-input" class="text-left"></p-autoComplete>
                     @if (group.value.selectedSkills.length <= 0 ) {<label for="skill-input">Compétences</label>}
 

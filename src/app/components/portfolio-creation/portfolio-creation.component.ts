@@ -26,7 +26,7 @@ import { ImageModule } from 'primeng/image';
     ReactiveFormsModule,
 
     MediaManagerComponent,
-    
+
     InputTextModule,
     ButtonModule,
     CardModule,
@@ -58,7 +58,7 @@ export class PortfolioCreationComponent {
       description: '',
       projects: [],
       userId: this.user.Id,
-      mediaId: undefined
+      mediaId: undefined,
     };
 
     this.group = this.formBuilder.group({
@@ -82,8 +82,8 @@ export class PortfolioCreationComponent {
   }
 
   getMedias(medias: Media[]) {
-    if(medias.length > 0){
-      this.media = medias[0]
+    if (medias.length > 0) {
+      this.media = medias[0];
       this.portfolio.mediaId = this.media.id;
     }
     this.isAddingMedia = false;
@@ -97,9 +97,9 @@ export class PortfolioCreationComponent {
       //Add Portfolio to DB
       this.portfolioServ.create(this.portfolio).subscribe({
         next: (p: Portfolio) => {
-          this.router.navigate(['/projectCreation', p.id]);
-
-          //TODO: Message de validation
+          this.router.navigate(['/projectCreation', p.id]).then(() => {
+            alert('Le portfolio ' + p.title + ' a bien été créé');
+          });
         },
         error: (err: any) => {
           console.log(err);

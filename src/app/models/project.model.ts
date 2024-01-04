@@ -10,7 +10,13 @@ export interface ProjectCreation {
     skillIds: number[]
 }
 
-export interface Project extends ProjectCreation {
+export interface ProjectUpdate extends ProjectCreation {
+    id: number
+    skill: Skill[]
+    media: Media[]
+}
+
+export interface Project extends ProjectUpdate {
     id: number
     creationDate: Date
     lastUpdateDate?: Date

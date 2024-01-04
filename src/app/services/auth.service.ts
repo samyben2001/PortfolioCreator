@@ -6,6 +6,7 @@ import { jwtDecode } from 'jwt-decode';
 })
 export class AuthService {
   isConnected = signal<boolean>(false);
+  user = signal(null)
 
   checkConnection() {
     if (this.getToken()) this.isConnected.set(true);
@@ -24,7 +25,7 @@ export class AuthService {
     };
 
     localStorage.setItem('User', JSON.stringify(u));
-
+    
     this.isConnected.set(true);
   }
 

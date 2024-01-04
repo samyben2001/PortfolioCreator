@@ -1,8 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environment';
-import { Project, ProjectCreation } from '../models/project.model';
+import { Project, ProjectCreation, ProjectUpdate } from '../models/project.model';
+import { Media } from '../models/media.model';
+import { Skill } from '../models/skill.model';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +34,29 @@ export class ProjectService {
     return this.client.get<Project[]>(this.url + "Project/getAllByUser/" + userId)
   }
 
+  update(project: ProjectUpdate): Observable<Project> {
+    return this.client.patch<Project>(this.url + "Project/", project)
+  }
+
   delete(id: number): Observable<boolean> {
     return this.client.delete<boolean>(this.url + "Project/" + id)
+  }
+
+  removeMedia(id: number, mediaId: number): Observable<boolean> {
+    const options = {
+      body: {
+        id: mediaId,
+      },
+    };
+    return this.client.delete<boolean>(this.url + "Project/" + id + "/RemoveMedia/", options)
+  }
+
+  removeSkill(id: number, skillId: number): Observable<boolean> {
+    const options = {
+      body: {
+        id: skillId,
+      },
+    };
+    return this.client.delete<boolean>(this.url + "Project/" + id + "/RemoveSkill/", options)
   }
 }

@@ -1,5 +1,7 @@
 import {
   Component,
+  Signal,
+  SimpleChanges,
   WritableSignal,
   computed,
   inject,
@@ -34,20 +36,27 @@ export class NavbarComponent {
   authService = inject(AuthService);
   router = inject(Router);
   isConnected: WritableSignal<boolean> = signal(false);
-  user: any;
+  user: Signal<any>;
 
   items: MenuItem[] = [];
   endItems: MenuItem[] = [];
 
-  constructor() {}
+  constructor() {
+    this.isConnected = this.authService.isConnected;
+    this.user = computed(() => {
+      if (this.isConnected()) {
+        return this.authService.getUser();
+      }
+      return null;
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+  }
 
   ngOnInit() {
     this.authService.checkConnection();
-    this.isConnected = this.authService.isConnected;
 
-    this.user = this.authService.getUser();
-    
-    if (this.user) {
       this.items = [
         {
           label: undefined,
@@ -69,7 +78,7 @@ export class NavbarComponent {
             },
             {
               label: 'Mes portfolios',
-              routerLink: ['portfolios/', this.user.Id],
+              routerLink: ['portfolios/', this.user().Id],
             },
           ],
         },
@@ -85,7 +94,7 @@ export class NavbarComponent {
           ],
         },
       ];
-    }
+    
   }
 
   goToProfile() {
@@ -102,5 +111,6 @@ export class NavbarComponent {
 
   logout() {
     this.authService.removeToken();
+    this.router.navigate(['']);
   }
 }

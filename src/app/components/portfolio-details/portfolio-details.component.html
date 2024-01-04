@@ -1,20 +1,20 @@
-<!-- TODO: permettre l'update du portfolio -->
 @if (portfolio) {
 <p-panel>
     <ng-template pTemplate="header">
         <div class="w-full text-center relative">
             <p-button [label]="isUpdateActive ? 'Arreter la modification' : 'Activer la modification'"
-                class="absolute top-0 right-0" size="small" (click)="toggleUpdate()"></p-button>
+                class="absolute top-0 right-0" size="small" [severity]="!isUpdateActive ? 'primary' : 'danger'" (click)="toggleUpdate()"></p-button>
             <h2 class="flex justify-content-center">
-                <span class="pr-2">{{portfolio.title | titlecase}}</span>
-                <i [class]="isUpdateActive ? 'pi pi-pencil cursor-pointer text-sm align-self-center text-500' : 'hidden'"
-                    (click)="update(portfolioUpdateType.Title)"></i>
+                <span>{{portfolio.title | titlecase}}</span>
+                <i [class]="isUpdateActive ? 'pi pi-pencil cursor-pointer text-sm align-self-center text-500 pl-2' : 'hidden'"
+                    (click)="update(allUpdateTypes.Title)"></i>
             </h2>
 
             <p class="text-sm text-500">{{portfolio.creationDate| date:'dd-MM-YYYY'}}</p>
-            <p class="border-top-1 border-400 pt-2">{{portfolio.description}} <i
-                    [class]="isUpdateActive ? 'pi pi-pencil cursor-pointer text-sm align-self-center text-500' : 'hidden'"
-                    (click)="update(portfolioUpdateType.Description)"></i>
+            <p class="border-top-1 border-400 pt-2">
+                <span>{{portfolio.description}}</span>
+                <i [class]="isUpdateActive ? 'pi pi-pencil cursor-pointer text-sm align-self-center text-500 pl-2' : 'hidden'"
+                    (click)="update(allUpdateTypes.Description)"></i>
             </p>
         </div>
     </ng-template>
@@ -38,7 +38,9 @@
             <ng-template pTemplate="content">
                 <div>
                     <p>{{project.description}}</p>
-                    <p>{{project.creationDate | date:'dd-MM-YYYY'}}</p>
+                    @if (project.endingDate) {
+                    <p>{{project.endingDate | date:'dd-MM-YYYY'}}</p>
+                    }
                 </div>
             </ng-template>
         </p-panel>
@@ -54,5 +56,6 @@
     </ng-template>
 </p-panel>
 
-<app-portfolio-update-pop-up [hidden]="!isUpdating" [portfolioToUpdate]="portfolio" [updateType]="updateType" (updateEvent)="getUpdatedPortfolio($event)"></app-portfolio-update-pop-up>
+<app-update-pop-up [hidden]="!isUpdating" [objectToUpdate]="portfolio" [updateType]="updateType"
+    (updateEvent)="getUpdatedPortfolio($event)"></app-update-pop-up>
 }

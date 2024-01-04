@@ -13,7 +13,12 @@ import { ProjectCreation } from '../../models/project.model';
 import { ProjectService } from '../../services/project.service';
 import { MediaManagerComponent } from '../../shared/components/media-manager/media-manager.component';
 import { Media } from '../../models/media.model';
-import { AutoCompleteModule } from 'primeng/autocomplete';
+import {
+  AutoCompleteCompleteEvent,
+  AutoCompleteModule,
+  AutoCompleteSelectEvent,
+  AutoCompleteUnselectEvent,
+} from 'primeng/autocomplete';
 import { SkillService } from '../../services/skill.service';
 import { Skill } from '../../models/skill.model';
 
@@ -23,6 +28,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { CalendarModule } from 'primeng/calendar';
 import { ImageModule } from 'primeng/image';
+import e from 'express';
 
 @Component({
   selector: 'app-project-creation',
@@ -49,7 +55,6 @@ export class ProjectCreationComponent {
   skillServ = inject(SkillService);
   route = inject(ActivatedRoute);
   router = inject(Router);
-  document = inject(DOCUMENT);
 
   groups: FormGroup[] = [];
 
@@ -117,25 +122,51 @@ export class ProjectCreationComponent {
     this.isAddingMedia = false;
   }
 
-  filterSkill(event: any) {
+  filterSkill(event: AutoCompleteCompleteEvent) {
     let skill: string = event.query.toUpperCase();
-    this.filteredSkills = this.allSkills.filter(
-      (sk) => sk.name.toUpperCase().indexOf(skill) == 0
-    );
+    this.filteredSkills = this.allSkills
+      .filter((sk) => sk.name.toUpperCase().indexOf(skill) == 0)
+      .sort((a, b) => a.name.localeCompare(b.name));
 
     if (this.filteredSkills.length > 0) {
       if (
         this.filteredSkills.findIndex((sk) => sk.name.toUpperCase() == skill) ==
         -1
-      )
+      ) {
         this.filteredSkills.unshift({ name: skill, id: -1 });
+      }
 
       return this.filteredSkills;
     } else return (this.filteredSkills = [{ name: skill, id: -1 }]);
   }
 
+  removeSkill(event: AutoCompleteSelectEvent) {
+    this.allSkills.splice(
+      this.allSkills.findIndex((s) => s.id == event.value.id),
+      1
+    );
+    return this.allSkills;
+  }
+
+  addSkill(event: AutoCompleteUnselectEvent) {
+    if (this.allSkills.findIndex((s) => s.id == event.value.id) == -1)
+      this.allSkills.push(event.value);
+
+    return this.allSkills;
+  }
+
+  focus($event: Event) {
+    console.log($event);
+  }
+
   addNewProject() {
     this.groups.push(this.addNewForm());
+
+    this.skillServ.getAll().subscribe({
+      next: (s) => {
+        this.allSkills = s;
+      },
+    });
   }
 
   submitAll() {
@@ -155,33 +186,38 @@ export class ProjectCreationComponent {
       this.projects[index].description = group.value.description;
       this.projects[index].endingDate = group.value.endingDate;
 
-      group.value.selectedSkills.sort((a: Skill, b: Skill) => {
-        return b.id! - a.id!;
-      }); //sort by id: new skills (id = -1) at the end of the array
+      if (group.value.selectedSkills.length <= 0)
+        this.sendProjectToDB(this.projects[index]);
+      else {
+        //sort by id: new skills (id = -1) at the end of the array
+        group.value.selectedSkills.sort((a: Skill, b: Skill) => {
+          return b.id! - a.id!;
+        });
 
-      group.value.selectedSkills.forEach((skill: Skill, i: number) => {
-        //add new skill to DB if not already present
-        if (skill.id == -1) {
-          this.skillServ.create(skill).subscribe({
-            next: (s) => {
-              this.projects[index].skillIds.push(s.id!);
-              this.allSkills.push(s);
+        group.value.selectedSkills.forEach((skill: Skill, i: number) => {
+          //add new skill to DB if not already present
+          if (skill.id == -1) {
+            this.skillServ.create(skill).subscribe({
+              next: (s) => {
+                this.projects[index].skillIds.push(s.id!);
+                this.allSkills.push(s);
 
-              if (i == group.value.selectedSkills.length - 1) {
-                //Send project to DB after last skill created
-                this.sendProjectToDB(this.projects[index]);
-              }
-            },
-          });
-        } else {
-          this.projects[index].skillIds.push(skill.id!);
+                if (i == group.value.selectedSkills.length - 1) {
+                  //Send project to DB after last skill created
+                  this.sendProjectToDB(this.projects[index]);
+                }
+              },
+            });
+          } else {
+            this.projects[index].skillIds.push(skill.id!);
 
-          if (i == group.value.selectedSkills.length - 1) {
-            //Send project to DB after last skill created
-            this.sendProjectToDB(this.projects[index]);
+            if (i == group.value.selectedSkills.length - 1) {
+              //Send project to DB after last skill created
+              this.sendProjectToDB(this.projects[index]);
+            }
           }
-        }
-      });
+        });
+      }
     } else {
       this.allProjectsValids = false;
     }
@@ -190,7 +226,9 @@ export class ProjectCreationComponent {
   private sendProjectToDB(project: ProjectCreation) {
     this.projectServ.create(project).subscribe({
       next: (p) => {
-        this.router.navigate(['/project/', p.id]);
+        this.router.navigate(['/project/', p.id]).then(() => {
+          alert('Le projet ' + p.title + ' a bien été créé');
+        });
       },
     });
   }

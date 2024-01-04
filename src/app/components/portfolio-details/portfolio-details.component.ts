@@ -9,11 +9,8 @@ import { PanelModule } from 'primeng/panel';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { ProjectService } from '../../services/project.service';
-import { PortfolioUpdatePopUpComponent } from '../../shared/components/portfolio-update-pop-up/portfolio-update-pop-up.component';
-import {
-  PortfolioUpdateType,
-  ProjectUpdateType,
-} from '../../enums/updateType.enum';
+import { UpdatePopUpComponent } from '../../shared/components/update-pop-up/update-pop-up.component';
+import { UpdateType } from '../../enums/updateType.enum';
 
 @Component({
   selector: 'app-portfolio-details',
@@ -21,7 +18,7 @@ import {
   imports: [
     CommonModule,
 
-    PortfolioUpdatePopUpComponent,
+    UpdatePopUpComponent,
 
     RouterModule,
     PanelModule,
@@ -37,12 +34,12 @@ export class PortfolioDetailsComponent {
   route = inject(ActivatedRoute);
   router = inject(Router);
 
-  portfolioUpdateType = PortfolioUpdateType;
+  allUpdateTypes = UpdateType;
 
   isUpdateActive = false;
   isUpdating = false;
   portfolio?: Portfolio;
-  updateType?: PortfolioUpdateType;
+  updateType?: UpdateType;
 
   constructor() {
     const portfolioId: number = Number(
@@ -79,14 +76,17 @@ export class PortfolioDetailsComponent {
     this.isUpdateActive = !this.isUpdateActive;
   }
 
-  update(type: PortfolioUpdateType) {
+  update(type: UpdateType) {
     this.updateType = type;
     this.isUpdating = true;
   }
 
-  getUpdatedPortfolio($event: Portfolio) {
-    this.portfolio = $event;
-	this.isUpdating = false;
+  getUpdatedPortfolio($event: any) {
+    if ($event != null) {
+      this.portfolio = $event;
+    }
+
+    this.isUpdating = false;
   }
 
   navigateToProjectCreation(id: number) {

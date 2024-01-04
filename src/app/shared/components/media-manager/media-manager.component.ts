@@ -94,7 +94,6 @@ export class MediaManagerComponent {
     ];
 
     //Get pictures of User
-    console.log(this.videoIsAvailable)
     this.mediaServ.getAllByUserAndMediaType(this.user.Id, 1).subscribe({
       next: (m) => {
         this.pictures = m;

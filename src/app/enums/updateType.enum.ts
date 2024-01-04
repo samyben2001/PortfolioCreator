@@ -1,12 +1,7 @@
-export enum PortfolioUpdateType {
+export enum UpdateType {
   Title,
   Description,
-  Media
-}
-
-export enum ProjectUpdateType {
-  Title,
-  Description,
+  EndingDate,
   Media,
-  Skill
+  Skill,
 }

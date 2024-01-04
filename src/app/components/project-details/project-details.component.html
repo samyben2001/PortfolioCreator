@@ -1,25 +1,51 @@
-<!-- TODO: permettre l'update du projet -->
 @if (project) {
 <p-panel>
     <ng-template pTemplate="header">
-        <div class="w-full text-center">
-            <h2>{{project.title | titlecase}}</h2>
-            <p>{{project.creationDate| date:'dd-MM-YYYY'}}</p>
+        <div class="w-full text-center relative">
+            <p-button [label]="isUpdateActive ? 'Arreter la modification' : 'Activer la modification'"
+                class="absolute top-0 right-0" size="small" [severity]="!isUpdateActive ? 'primary' : 'danger'"
+                (click)="toggleUpdate()"></p-button>
+            <h2>
+                <span>{{project.title | titlecase}}</span>
+                <i [class]="isUpdateActive ? 'pi pi-pencil cursor-pointer text-sm align-self-center text-500 pl-2' : 'hidden'"
+                    (click)="update(allUpdateTypes.Title)"></i>
+            </h2>
+            @if (project.endingDate) {
+            <p>
+                <span>{{project.endingDate| date:'dd-MM-YYYY'}}</span>
+                <i [class]="isUpdateActive ? 'pi pi-pencil cursor-pointer text-sm align-self-center text-500 pl-2' : 'hidden'"
+                    (click)="update(allUpdateTypes.EndingDate)"></i>
+            </p>
+            }
         </div>
     </ng-template>
 
     <div class="mt-2 mb-4 border-bottom-1 border-200 text-center">
-        <p>{{project.description}}</p>
+        <p>
+            <span>{{project.description}}</span>
+            <i [class]="isUpdateActive ? 'pi pi-pencil cursor-pointer text-sm align-self-center text-500 pl-2' : 'hidden'"
+                (click)="update(allUpdateTypes.Description)"></i>
+        </p>
     </div>
 
     <!-- Images -->
-    <p-carousel [value]="images" [numVisible]="1" [numScroll]="1" [circular]="true">
+    @if(images.length > 0){
+    <p-carousel [value]="images" [numVisible]="1" [numScroll]="1" [circular]="images.length > 1 ? true : false">
         <ng-template let-image pTemplate="item">
-            <p-image [src]="image.url" [alt]="image.title" imageClass="w-full"></p-image>
+            <div class="relative text-center">
+                <div [class]="isUpdateActive ? 'absolute top-0 right-0 -m-2' : 'hidden'">
+                    <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="danger" size="small"
+                        (click)="deleteMedia($event, image.id)"></p-button>
+                </div>
+                <p-image [src]="image.url" [alt]="image.title" imageClass="w-full lg:w-auto" [imageStyle]="{'max-height': '300px'}"></p-image>
+            </div>
         </ng-template>
     </p-carousel>
+    <!-- TODO: Permettre l'ajout de medias/skills lorsque la modification est en cours -->
+    }
 
     <!-- Videos -->
+    @if(videos.length > 0){
     <div class="grid justify-content-center my-2">
         @for (vid of videos; track $index) {
         <div class="col-6 lg:col-2 relative">
@@ -27,14 +53,27 @@
         </div>
         }
     </div>
+    }
 
     <!-- Skills -->
+    @if (project.skill.length > 0) {
     <div class="grid justify-content-center my-2">
         @for (skill of project.skill; track $index) {
-        <div class="col-2 text-center">
+        <div class="col-2 text-center relative">
             <p-chip [label]="skill.name"></p-chip>
+
+            <div [class]="isUpdateActive ? 'absolute top-0 right-0 -m-2' : 'hidden'">
+                <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="danger" size="small"
+                    (click)="deleteSkill($event, skill.id!)"></p-button>
+            </div>
         </div>
         }
     </div>
+    }
+
 </p-panel>
+
+
+<app-update-pop-up [hidden]="!isUpdating" [objectToUpdate]="project" [updateType]="updateType"
+    (updateEvent)="getUpdatedProject($event)"></app-update-pop-up>
 }
