@@ -1,7 +1,6 @@
 import {
   Component,
   Signal,
-  SimpleChanges,
   WritableSignal,
   computed,
   inject,
@@ -38,26 +37,15 @@ export class NavbarComponent {
   isConnected: WritableSignal<boolean> = signal(false);
   user: Signal<any>;
 
-  items: MenuItem[] = [];
+  items: Signal<MenuItem[]>
   endItems: MenuItem[] = [];
 
   constructor() {
     this.isConnected = this.authService.isConnected;
-    this.user = computed(() => {
+
+    this.items = computed(() => {
       if (this.isConnected()) {
-        return this.authService.getUser();
-      }
-      return null;
-    });
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-  }
-
-  ngOnInit() {
-    this.authService.checkConnection();
-
-      this.items = [
+        return [
         {
           label: undefined,
           items: [
@@ -94,7 +82,21 @@ export class NavbarComponent {
           ],
         },
       ];
-    
+      }
+
+      return [];
+    });
+
+    this.user = computed(() => {
+      if (this.isConnected()) {
+        return this.authService.getUser();
+      }
+      return null;
+    });
+  }
+
+  ngOnInit() {
+    this.authService.checkConnection();
   }
 
   goToProfile() {

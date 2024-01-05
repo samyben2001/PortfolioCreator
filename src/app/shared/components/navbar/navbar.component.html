@@ -12,7 +12,7 @@
         <p-button label="Se Connecter" [raised]="true" (click)="login()" class="mr-2"></p-button>
         <p-button label="S'enregistrer" [raised]="true" (click)="register()"></p-button>
         }@else{
-        <p-menu #menu [model]="items" [popup]="true"></p-menu>
+        <p-menu #menu [model]="items()" [popup]="true"></p-menu>
         <p-button styleClass="p-button-text border-none align-items-end" [outlined]="true" severity="secondary"
             (click)="menu.toggle($event)">
             <i class="pi pi pi-user pr-2">
