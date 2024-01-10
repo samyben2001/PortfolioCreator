@@ -13,17 +13,21 @@ import { CarouselModule, CarouselPageEvent } from 'primeng/carousel';
 import { UpdatePopUpComponent } from '../../shared/components/update-pop-up/update-pop-up.component';
 import { UpdateType } from '../../enums/updateType.enum';
 import { ButtonModule } from 'primeng/button';
+import { MediaManagerComponent } from '../../shared/components/media-manager/media-manager.component';
 
 @Component({
   selector: 'app-project-details',
   standalone: true,
   imports: [
     CommonModule,
+
+    UpdatePopUpComponent,
+    MediaManagerComponent,
+
     PanelModule,
     ChipModule,
     ImageModule,
     CarouselModule,
-    UpdatePopUpComponent,
     ButtonModule,
   ],
   templateUrl: './project-details.component.html',
@@ -41,9 +45,12 @@ export class ProjectDetailsComponent {
 
   isUpdateActive = false;
   isUpdating = false;
+  isMediaUpdating = false;
   updateType?: UpdateType;
 
-  constructor() {
+  constructor() {}
+
+  ngOnInit() {
     const projectid: number = Number(
       this.route.snapshot.paramMap.get('projectId')
     );
@@ -74,20 +81,46 @@ export class ProjectDetailsComponent {
   }
 
   update(type: UpdateType) {
-    this.updateType = type;
-    this.isUpdating = true;
+    if (type == UpdateType.Media) {
+      this.isMediaUpdating = true;
+    } else {
+      this.updateType = type;
+      this.isUpdating = true;
+    }
   }
 
   getUpdatedProject($event: any) {
     if ($event != null) {
       this.project = $event;
     }
-
+    this.updateType = undefined;
     this.isUpdating = false;
   }
 
+  getNewMedias($event: Media[]) {
+    this.isMediaUpdating = false;
+    $event.forEach(media => {
+      this.projectServ.addMedia(this.project!.id, media.id).subscribe({
+      next:()=>{
+        this.project?.media.push(media)
+        switch (media.mediaTypeId) {
+          case 1:
+            this.images.push(media);
+            break;
+
+          case 2:
+            this.videos.push(media);
+            break;
+
+          default:
+            break;
+        }
+      }
+      })
+    });
+  }
+
   deleteMedia($event: Event, id: number) {
-    console.log(this.project);
     const mediaToDelete = this.project?.media.splice(
       this.project.media.findIndex((m) => m.id == id),
       1
@@ -109,25 +142,20 @@ export class ProjectDetailsComponent {
               1
             );
             break;
-
           default:
             break;
         }
-        console.log('media deleted: ', r);
       },
     });
   }
 
   deleteSkill($event: Event, id: number) {
-    console.log(this.project);
-    this.project?.skill.splice(
-      this.project.skill.findIndex((s) => s.id == id),
-      1
-    );
-
     this.projectServ.removeSkill(this.project!.id, id).subscribe({
       next: (r) => {
-        console.log('skill deleted: ', r);
+        this.project?.skill.splice(
+          this.project.skill.findIndex((s) => s.id == id),
+          1
+        );
       },
     });
   }

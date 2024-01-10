@@ -41,7 +41,6 @@ export class NavbarComponent {
   endItems: MenuItem[] = [];
 
   constructor() {
-    this.isConnected = this.authService.isConnected;
 
     this.items = computed(() => {
       if (this.isConnected()) {
@@ -61,12 +60,12 @@ export class NavbarComponent {
           label: 'Portfolios',
           items: [
             {
-              label: 'Créer Portfolio',
-              routerLink: '/portfolioCreation',
-            },
-            {
               label: 'Mes portfolios',
               routerLink: ['portfolios/', this.user().Id],
+            },
+            {
+              label: 'Créer portfolio',
+              routerLink: '/portfolioCreation',
             },
           ],
         },
@@ -97,6 +96,7 @@ export class NavbarComponent {
 
   ngOnInit() {
     this.authService.checkConnection();
+    this.isConnected = this.authService.isConnected;
   }
 
   goToProfile() {

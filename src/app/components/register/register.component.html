@@ -2,24 +2,24 @@
     <form [formGroup]="group" class="w-full" (ngSubmit)="submit()">
         <div class="pb-4 w-full">
             <span class="p-float-label">
-                <input formControlName="email" pInputText id="Email" type="email" class="validate w-full" />
-                <label htmlFor="Email">Email</label>
+                <input formControlName="email" pInputText id="Email" type="email" class="validate w-full" autocomplete="email"/>
+                <label for="Email">Email</label>
             </span>
         </div>
 
         <div class="pb-4 w-full">
             <span class="p-float-label">
-                <p-password formControlName="password" styleClass="w-full" inputStyleClass="validate w-full"
+                <p-password formControlName="password" inputId="Password" styleClass="w-full" inputStyleClass="validate w-full"
                     [feedback]="false" [toggleMask]="true"></p-password>
-                <label for="password">Password</label>
+                <label for="Password">Password</label>
             </span>
         </div>
 
         <div class="pb-4 w-full">
             <span class="p-float-label">
-                <p-password formControlName="checkPassword" styleClass="w-full" inputStyleClass="validate w-full"
+                <p-password formControlName="checkPassword" inputId="CheckPassword" styleClass="w-full" inputStyleClass="validate w-full"
                     [feedback]="false" [toggleMask]="true"></p-password>
-                <label for="password">Password</label>
+                <label for="CheckPassword">Password</label>
             </span>
         </div>
 

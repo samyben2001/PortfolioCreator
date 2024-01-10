@@ -24,6 +24,9 @@
                     <label for="EndingDate">Date de réalisation</label>
                 </span>
                 }
+                @case (allUpdateTypes.Skill){
+                    <app-skill-picker (onSkillChange)="getSkills($event)" [existingSkills]="existingSkills"/>
+                }
             @default {
             <p>Champ inconnu!</p>
             }

@@ -3,7 +3,7 @@
     <ng-template pTemplate="header">
         <div class="w-full text-center relative">
             <p-button [label]="isUpdateActive ? 'Arreter la modification' : 'Activer la modification'"
-                class="absolute top-0 right-0" size="small" [severity]="!isUpdateActive ? 'primary' : 'danger'"
+                class="absolute top-0 right-0 -m-3" size="small" [severity]="!isUpdateActive ? 'primary' : 'danger'"
                 (click)="toggleUpdate()"></p-button>
             <h2>
                 <span>{{project.title | titlecase}}</span>
@@ -16,6 +16,11 @@
                 <i [class]="isUpdateActive ? 'pi pi-pencil cursor-pointer text-sm align-self-center text-500 pl-2' : 'hidden'"
                     (click)="update(allUpdateTypes.EndingDate)"></i>
             </p>
+            }@else {
+            @if (isUpdateActive) {
+            <p-button label="Ajouter une date de fin" size="small"
+                (click)="update(allUpdateTypes.EndingDate)"></p-button>
+            }
             }
         </div>
     </ng-template>
@@ -37,11 +42,16 @@
                     <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="danger" size="small"
                         (click)="deleteMedia($event, image.id)"></p-button>
                 </div>
-                <p-image [src]="image.url" [alt]="image.title" imageClass="w-full lg:w-auto" [imageStyle]="{'height': '300px'}"></p-image>
+                <p-image [src]="image.url" [alt]="image.title" imageClass="w-full lg:w-auto"
+                    [imageStyle]="{'height': '300px'}"></p-image>
             </div>
         </ng-template>
     </p-carousel>
-    <!-- TODO: Permettre l'ajout de medias/skills lorsque la modification est en cours -->
+    }
+    @if (isUpdateActive) {
+    <div class="mt-2">
+        <p-button label="Ajouter images" size="small" (click)="update(allUpdateTypes.Media)"></p-button>
+    </div>
     }
 
     <!-- Videos -->
@@ -71,8 +81,17 @@
     </div>
     }
 
+    @if (isUpdateActive) {
+    <div class="mt-2">
+        <p-button label="Ajouter compétences" size="small" (click)="update(allUpdateTypes.Skill)"></p-button>
+    </div>
+    }
+
 </p-panel>
 
+<!-- TODO: Envoyer les medias et non la longueur au "MediaManagerComponent" et désactiver(griser) les médias déja présent dans le projet -->
+<app-media-manager [hidden]="!isMediaUpdating" [maxMediaSelected]="10" [actualMediaSelected]="
+this.project.media.length" (selectedMediasEvent)="getNewMedias($event)" />
 
 <app-update-pop-up [hidden]="!isUpdating" [objectToUpdate]="project" [updateType]="updateType"
     (updateEvent)="getUpdatedProject($event)"></app-update-pop-up>

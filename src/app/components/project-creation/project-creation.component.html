@@ -27,13 +27,7 @@
             </div>
 
             <div class="pb-4">
-                <span class="p-fluid p-float-label">
-                    <p-autoComplete formControlName="selectedSkills" [suggestions]="filteredSkills"
-                        (completeMethod)="filterSkill($event)" (onSelect)="removeSkill($event)" (onUnselect)="addSkill($event)" (onFocus)="focus($event)" [completeOnFocus]="true" [multiple]="true" field="name"
-                        inputId="skill-input" class="text-left"></p-autoComplete>
-                    @if (group.value.selectedSkills.length <= 0 ) {<label for="skill-input">Compétences</label>}
-
-                </span>
+                <app-skill-picker (onSkillChange)="getSkills($event, $index)"/>
             </div>
 
             <div class="pb-4 text-left">
@@ -68,5 +62,6 @@
     </ng-template>
 </p-card>
 
+<!-- TODO: Envoyer les medias et non la longueur au "MediaManagerComponent" et désactiver(griser) les médias déja présent dans le projet -->
 <app-media-manager [hidden]="!isAddingMedia" [maxMediaSelected]="10" [actualMediaSelected]="
 this.selectedMediasByProj.get(index)?.length!" (selectedMediasEvent)="getMedias($event)" />

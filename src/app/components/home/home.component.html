@@ -1,6 +1,7 @@
 <p-card header="Portfolio Creator" class="text-center">
     <!-- <ng-template pTemplate="header"></ng-template> -->
 
+    @if (!isConnected()) {
     <p class="line-height-4">
         Bienvenue,
         <p-button label="S'enregistrer" [raised]="true" size="small" (click)="register()"></p-button> pour démarrer la
@@ -9,6 +10,14 @@
         <p-button label="Se Connecter" [raised]="true" size="small" (click)="login()"></p-button> pour accéder à vos
         Portfolios
     </p>
+    }@else{
+    <p class="line-height-4">
+        Bienvenue @if(user()){{{user().Username}}},
+        <p-button label="Acceder à vos portfolios" [raised]="true" size="small" (click)="goToPortfolios()"></p-button> 
+        ou
+        <p-button label="Creer un nouveau portfolio" [raised]="true" size="small" (click)="goToPortfolioCreation()"></p-button>
+    </p>
+    }
 
     <!-- <ng-template pTemplate="footer"></ng-template> -->
 </p-card>
