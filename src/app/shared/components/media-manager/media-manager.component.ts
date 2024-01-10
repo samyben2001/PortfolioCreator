@@ -62,6 +62,7 @@ export class MediaManagerComponent {
 
   @Input() maxMediaSelected: number = 0;
   @Input() actualMediaSelected: number = 0;
+  @Input() actualProjectMedias: Media[] = [];
   @Input() videoIsAvailable: boolean = true;
   @Input() pictureIsAvailable: boolean = true;
 
@@ -78,6 +79,7 @@ export class MediaManagerComponent {
   }
 
   ngOnInit() {
+    console.log(this.actualProjectMedias)
     this.tabItems = [
       {
         label: 'Images',

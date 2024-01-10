@@ -37,7 +37,6 @@ export class HomeComponent {
       }
       return null;
     });
-    console.log(this.user())
   }
 
   login() {

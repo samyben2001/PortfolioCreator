@@ -16,7 +16,8 @@ export const headersInterceptor: HttpInterceptorFn = (req, next) => {
 
       if (Date.now() >= tokenExpirationDate) {
         authServ.removeToken();
-        router.navigate(['/login']);
+        router.navigate(['']);
+        alert("Votre session à expiré")
       } else {
         let clone = req.clone({
           setHeaders: {
