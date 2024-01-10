@@ -17,6 +17,7 @@ import { Media } from '../../../models/media.model';
 import { AuthService } from '../../../services/auth.service';
 import { CloudinaryService } from '../../../services/cloudinary.service';
 import { MediaService } from '../../../services/media.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-media-manager-content',
@@ -27,6 +28,7 @@ import { MediaService } from '../../../services/media.service';
     ImageModule,
     CheckboxModule,
     ContextMenuModule,
+    FormsModule
   ],
   templateUrl: './media-manager-content.component.html',
   styleUrl: './media-manager-content.component.scss',
@@ -37,13 +39,16 @@ export class MediaManagerContentComponent {
   cloudinaryServ = inject(CloudinaryService);
   cdRef = inject(ChangeDetectorRef);
 
+  checked: boolean = true;
+
   user: any;
 
   @Input() mediasType: number = 0;
   @Input() medias: Media[] = [];
 
   @Input() maxMediaSelected: number = 0;
-  @Input() actualMediaSelected: number = 0;
+  @Input() actualMediaSelected: number = 0; 
+  @Input() actualProjectMedias: Media[] = [];
 
   selectedMedias: Media[] = [];
   @Output() addMediasEvent: EventEmitter<Media[]> = new EventEmitter<Media[]>();
@@ -126,6 +131,10 @@ export class MediaManagerContentComponent {
         }
       },
     });
+  }
+
+  checkMediaAlreadyPresent(id: number){
+    return this.actualProjectMedias.findIndex(m => m.id == id) != -1
   }
 
   initializeSelectedMediasToEmpty() {

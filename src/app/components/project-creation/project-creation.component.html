@@ -62,5 +62,4 @@
     </ng-template>
 </p-card>
 
-<!-- TODO: Envoyer les medias et non la longueur au "MediaManagerComponent" et désactiver(griser) les médias déja présent dans le projet -->
-<app-media-manager [hidden]="!isAddingMedia" [maxMediaSelected]="10" [actualMediaSelected]="this.selectedMediasByProj.get(index)!.length" [actualProjectMedias]="this.selectedMediasByProj.get(index)!" (selectedMediasEvent)="getMedias($event)" />
+<app-media-manager [hidden]="!isAddingMedia" [maxMediaSelected]="10" [actualMediaSelected]="this.selectedMediasByProj.get(index)?.length!" [actualProjectMedias]="this.selectedMediasByProj.get(index)!" (selectedMediasEvent)="getMedias($event)" />

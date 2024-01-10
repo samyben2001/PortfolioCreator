@@ -22,9 +22,7 @@ import { TabMenuModule } from 'primeng/tabmenu';
 import { ImageModule } from 'primeng/image';
 import { Checkbox, CheckboxModule } from 'primeng/checkbox';
 import { MenuItem } from 'primeng/api';
-import { ContextMenuModule } from 'primeng/contextmenu';
 import { AuthService } from '../../../services/auth.service';
-import { first } from 'rxjs';
 import { MediaManagerContentComponent } from '../media-manager-content/media-manager-content.component';
 
 @Component({
@@ -79,7 +77,6 @@ export class MediaManagerComponent {
   }
 
   ngOnInit() {
-    console.log(this.actualProjectMedias)
     this.tabItems = [
       {
         label: 'Images',

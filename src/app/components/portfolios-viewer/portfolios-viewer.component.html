@@ -6,6 +6,7 @@
     </ng-template>
 
     <div class="grid justify-content-around">
+        @if (portfolios.length > 0) {
         @for (portfolio of portfolios; track $index) {
         <p-panel class="col-12 lg:col-5 p-0 cursor-pointer my-2 mx-1"
             (click)="navigateToPortfolio(portfolio.id)">
@@ -36,6 +37,7 @@
             </ng-template>
         </p-panel>
         }
+    }
     </div>
     
     <ng-template pTemplate="footer">

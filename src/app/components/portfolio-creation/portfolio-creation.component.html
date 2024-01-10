@@ -35,4 +35,4 @@
 </p-card>
 
 <app-media-manager [hidden]="!isAddingMedia" [maxMediaSelected]="1" [actualMediaSelected]="
-0" [videoIsAvailable]="false" (selectedMediasEvent)="getMedias($event)" />
+0" [videoIsAvailable]="false" [actualProjectMedias]="media != undefined ? [media]: []" (selectedMediasEvent)="getMedias($event)" />

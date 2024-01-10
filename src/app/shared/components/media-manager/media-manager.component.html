@@ -8,13 +8,13 @@
         <!-- TODO: permettre la suppression de media -->
         <app-media-manager-content
             [hidden]="!isAddingImage" [medias]="pictures" [mediasType]="1" [maxMediaSelected]="maxMediaSelected"
-            [actualMediaSelected]="actualMediaSelected" (addMediasEvent)="addMedia($event)"
+            [actualMediaSelected]="actualMediaSelected" [actualProjectMedias]="actualProjectMedias" (addMediasEvent)="addMedia($event)"
             (removeMediasEvent)="removeMedia($event)" (resetMediasEvent)="resetMedias()"></app-media-manager-content>
 
         <!-- Videos Viewer -->
         <app-media-manager-content
             [hidden]="!isAddingVideo" [medias]="videos" [mediasType]="2" [maxMediaSelected]="maxMediaSelected"
-            [actualMediaSelected]="actualMediaSelected" (addMediasEvent)="addMedia($event)"
+            [actualMediaSelected]="actualMediaSelected" [actualProjectMedias]="actualProjectMedias" (addMediasEvent)="addMedia($event)"
             (removeMediasEvent)="removeMedia($event)" (resetMediasEvent)="resetMedias()"></app-media-manager-content>
 
         <!-- Medias selected viewer -->
