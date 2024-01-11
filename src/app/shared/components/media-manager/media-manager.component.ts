@@ -59,7 +59,6 @@ export class MediaManagerComponent {
   isAddingVideo: boolean = false;
 
   @Input() maxMediaSelected: number = 0;
-  @Input() actualMediaSelected: number = 0;
   @Input() actualProjectMedias: Media[] = [];
   @Input() videoIsAvailable: boolean = true;
   @Input() pictureIsAvailable: boolean = true;

@@ -5,19 +5,11 @@
             @switch (mediasType) {
                 @case (1) {
                     @if (actualProjectMedias != undefined) {
-                      @if (checkMediaAlreadyPresent(media.id)) {
-                        <div class="col-6 lg:col-2 relative" style="height: fit-content;">       
-                            <p-checkbox #mediaCheck [name]="media.title" [binary]="true" [value]="true" [inputId]="'checkPic'+$index"
-                                class="absolute right-0 pr-2 z-2" [disabled]="true" [(ngModel)]="checked"></p-checkbox>
-                            <p-image #thumbnail [src]="media.url" [alt]="media.title" class="cursor-pointer" imageClass="w-full"></p-image>
-                        </div>
-                    }@else {
-                        <div class="col-6 lg:col-2 relative" style="height: fit-content;" (click)="selectMedia(media, mediaCheck)">       
-                            <p-checkbox #mediaCheck [name]="media.title" [binary]="true" [value]="false" [inputId]="'checkPic'+$index"
+                        <div class="col-6 lg:col-2 relative" style="height: fit-content;" (click)="!checkMediaAlreadyPresent(media.id) ? selectMedia(media, mediaCheck): ''">       
+                            <p-checkbox #mediaCheck [name]="media.title" [binary]="true" [ngModel]="checkMediaAlreadyPresent(media.id)" [value]="checkMediaAlreadyPresent(media.id)" [disabled]="checkMediaAlreadyPresent(media.id)" [ngModel]="checkMediaAlreadyPresent(media.id)" [inputId]="'checkPic'+$index"
                                 class="absolute right-0 pr-2 z-2" ></p-checkbox>
                             <p-image #thumbnail [src]="media.url" [alt]="media.title" class="cursor-pointer" imageClass="w-full"></p-image>
                         </div>
-                    }
                     }
                 }
                 @case(2){
@@ -27,30 +19,30 @@
                         <p-image #thumbnail [src]="media.url" [alt]="media.title" class="cursor-pointer" imageClass="w-full"></p-image>
                     </div>
                 }
-                }
+            }
         }
         }@else {
-        @switch (mediasType) {
-        @case (1) {
-        <p>Vous n'avez aucune images</p>
-        }
-        @case(2){
-        <p>Vous n'avez aucune vidéos</p>
-        }
-        }
+            @switch (mediasType) {
+                @case (1) {
+                <p>Vous n'avez aucune images</p>
+                }
+                @case(2){
+                <p>Vous n'avez aucune vidéos</p>
+                }
+            }
         }
     </div>
     
     <div class="pt-4">
         @switch (mediasType) {
-        @case (1) {
-        <p-fileUpload #imgUpload mode="basic" [multiple]="true" chooseLabel="Ajouter Image" name="addPic" id="addPic"
-            accept="image/*" (onSelect)="addMedia($event, imgUpload)"></p-fileUpload>
-        }
-        @case (2) {
-        <p-fileUpload #vidUpload mode="basic" [multiple]="true" chooseLabel="Ajouter Vidéo" name="addVid" id="addVid"
-            accept="video/*" (onSelect)="addMedia($event, vidUpload)"></p-fileUpload>
-        }
+            @case (1) {
+            <p-fileUpload #imgUpload mode="basic" [multiple]="true" chooseLabel="Ajouter Image" name="addPic" id="addPic"
+                accept="image/*" (onSelect)="addMedia($event, imgUpload)"></p-fileUpload>
+            }
+            @case (2) {
+            <p-fileUpload #vidUpload mode="basic" [multiple]="true" chooseLabel="Ajouter Vidéo" name="addVid" id="addVid"
+                accept="video/*" (onSelect)="addMedia($event, vidUpload)"></p-fileUpload>
+            }
         }
     </div>
 </div>

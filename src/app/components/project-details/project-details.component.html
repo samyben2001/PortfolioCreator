@@ -89,7 +89,7 @@
 
 </p-panel>
 
-<app-media-manager [hidden]="!isMediaUpdating" [maxMediaSelected]="10" [actualMediaSelected]="this.project.media.length" [actualProjectMedias]="this.project.media" (selectedMediasEvent)="getNewMedias($event)" />
+<app-media-manager [hidden]="!isMediaUpdating" [maxMediaSelected]="10" [actualProjectMedias]="this.project.media" (selectedMediasEvent)="getNewMedias($event)" />
 
 <app-update-pop-up [hidden]="!isUpdating" [objectToUpdate]="project" [updateType]="updateType"
     (updateEvent)="getUpdatedProject($event)"></app-update-pop-up>

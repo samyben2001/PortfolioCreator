@@ -47,7 +47,6 @@ export class MediaManagerContentComponent {
   @Input() medias: Media[] = [];
 
   @Input() maxMediaSelected: number = 0;
-  @Input() actualMediaSelected: number = 0; 
   @Input() actualProjectMedias: Media[] = [];
 
   selectedMedias: Media[] = [];
@@ -65,7 +64,7 @@ export class MediaManagerContentComponent {
     const i = this.selectedMedias.indexOf(media);
 
     if (i == -1) {
-      if (this.selectedMedias.length + this.actualMediaSelected < this.maxMediaSelected) {
+      if (this.selectedMedias.length + this.actualProjectMedias.length < this.maxMediaSelected) {
         check.writeValue(true);
         check.value = true;
         this.selectedMedias.push(media);
@@ -139,7 +138,7 @@ export class MediaManagerContentComponent {
 
   initializeSelectedMediasToEmpty() {
     this.checks.forEach((check) => {
-      check.writeValue(false);
+      check.writeValue(false); //FIXME: checkbox reste indefiniment sur false
       check.value = false;
     });
     this.selectedMedias = [];

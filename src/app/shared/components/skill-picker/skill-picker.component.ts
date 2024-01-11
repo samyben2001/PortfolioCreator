@@ -46,7 +46,7 @@ export class SkillPickerComponent {
   }
 
   ngAfterViewInit(){
-    console.log(this.skillInput?.nativeElement.querySelector('#skill-input'))
+    // console.log(this.skillInput?.nativeElement.querySelector('#skill-input'))
     // this.skillInput?.nativeElement.querySelector('#skill-input').focus()  
   }
 

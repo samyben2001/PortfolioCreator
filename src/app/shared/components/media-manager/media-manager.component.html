@@ -7,19 +7,21 @@
         <!-- Images Viewer -->
         <!-- TODO: permettre la suppression de media -->
         <app-media-manager-content
-            [hidden]="!isAddingImage" [medias]="pictures" [mediasType]="1" [maxMediaSelected]="maxMediaSelected"
-            [actualMediaSelected]="actualMediaSelected" [actualProjectMedias]="actualProjectMedias" (addMediasEvent)="addMedia($event)"
+            [hidden]="!isAddingImage" [medias]="pictures" [mediasType]="1" [maxMediaSelected]="maxMediaSelected" [actualProjectMedias]="actualProjectMedias" (addMediasEvent)="addMedia($event)"
             (removeMediasEvent)="removeMedia($event)" (resetMediasEvent)="resetMedias()"></app-media-manager-content>
 
         <!-- Videos Viewer -->
         <app-media-manager-content
-            [hidden]="!isAddingVideo" [medias]="videos" [mediasType]="2" [maxMediaSelected]="maxMediaSelected"
-            [actualMediaSelected]="actualMediaSelected" [actualProjectMedias]="actualProjectMedias" (addMediasEvent)="addMedia($event)"
+            [hidden]="!isAddingVideo" [medias]="videos" [mediasType]="2" [maxMediaSelected]="maxMediaSelected" [actualProjectMedias]="actualProjectMedias" (addMediasEvent)="addMedia($event)"
             (removeMediasEvent)="removeMedia($event)" (resetMediasEvent)="resetMedias()"></app-media-manager-content>
 
         <!-- Medias selected viewer -->
         <ng-template pTemplate="footer">
-            <p>Médias sélectionnés ({{selectedMedias.length + actualMediaSelected}}/{{maxMediaSelected}}):</p>
+            @if(actualProjectMedias != undefined){
+                <p>Médias sélectionnés ({{selectedMedias.length + actualProjectMedias.length}}/{{maxMediaSelected}}):</p>
+            }@else{
+                <p>Médias sélectionnés ({{selectedMedias.length}}/{{maxMediaSelected}}):</p>
+            }
             <div class="overflow-auto h-7rem lg:h-10rem pb-2 grid justify-content-around">
                 @if(selectedMedias.length > 0){
                 @for (media of selectedMedias; track $index) {
